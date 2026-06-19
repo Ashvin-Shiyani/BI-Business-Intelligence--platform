@@ -25,7 +25,7 @@ async function seed() {
       [c.name, c.email, c.city]
     )
   }
-  console.log('✅ Customers seeded')
+  console.log(' Customers seeded')
 
   for (const p of products) {
     await pool.query(
@@ -33,7 +33,7 @@ async function seed() {
       [p.name, p.category, p.price]
     )
   }
-  console.log('✅ Products seeded')
+  console.log('Products seeded')
 
   for (let i = 0; i < 50; i++) {
     const customerId = Math.floor(Math.random() * 5) + 1
@@ -47,8 +47,8 @@ async function seed() {
       [customerId, productId, quantity, price, date]
     )
   }
-  console.log('✅ Orders seeded')
-  console.log('🎉 Database seeded successfully!')
+  console.log(' Orders seeded')
+  console.log(' Database seeded successfully!')
   process.exit(0)
 }
 
