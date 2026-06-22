@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const pool = require('./config/db')
 const analyticsRoutes = require('./routes/analyticsRoutes')
+const uploadRoutes = require('./routes/uploadRoutes')
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -10,6 +11,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/analytics', analyticsRoutes)
+app.use('/api/upload', uploadRoutes)
 
 app.get('/', async (req, res) => {
   const result = await pool.query('SELECT NOW()')
