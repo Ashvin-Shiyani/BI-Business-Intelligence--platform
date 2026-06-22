@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getKPIs, getRevenueByMonth, getTopProducts, getRevenueByCategory } from './services/api'
+import { getKPIs, getRevenueByMonth, getTopProducts, getRevenueByCategory, getForecast, getAnomalies } from './services/api'
 import { Line, Bar, Pie } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -28,21 +28,27 @@ export default function App() {
   const [revenue, setRevenue] = useState([])
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
+  const [forecast, setForecast] = useState(null)
+  const [anomalies, setAnomalies] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchAll() {
       try {
-        const [k, r, p, c] = await Promise.all([
+        const [k, r, p, c, f, a] = await Promise.all([
           getKPIs(),
           getRevenueByMonth(),
           getTopProducts(),
-          getRevenueByCategory()
+          getRevenueByCategory(),
+          getForecast(),
+          getAnomalies()
         ])
         setKpis(k.data)
         setRevenue(r.data)
         setProducts(p.data)
         setCategories(c.data)
+        setForecast(f.data)
+        setAnomalies(a.data)
       } catch (err) {
         console.error(err)
       } finally {
@@ -81,6 +87,36 @@ export default function App() {
       backgroundColor: ['#6366f1', '#22d3ee', '#f59e0b']
     }]
   }
+
+  const forecastData = forecast ? {
+    labels: [
+      ...forecast.historical.map(h => h.month),
+      ...forecast.forecast.map(f => f.month)
+    ],
+    datasets: [
+      {
+        label: 'Historical Revenue',
+        data: [
+          ...forecast.historical.map(h => h.revenue),
+          ...forecast.forecast.map(() => null)
+        ],
+        borderColor: '#6366f1',
+        backgroundColor: 'rgba(99,102,241,0.1)',
+        tension: 0.4
+      },
+      {
+        label: 'Forecasted Revenue',
+        data: [
+          ...forecast.historical.map(() => null),
+          ...forecast.forecast.map(f => f.predicted_revenue)
+        ],
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245,158,11,0.1)',
+        borderDash: [5, 5],
+        tension: 0.4
+      }
+    ]
+  } : null
 
   return (
     <div className="dashboard">
@@ -121,7 +157,29 @@ export default function App() {
           <h3>Revenue by Category</h3>
           <Pie data={categoryData} options={{ responsive: true, plugins: { legend: { labels: { color: '#aaa' } } } }} />
         </div>
+        {forecastData && (
+          <div className="chart-card">
+            <h3>Revenue Forecast <span className={`trend ${forecast.trend}`}>{forecast.trend === 'up' ? 'Trending Up' : 'Trending Down'}</span></h3>
+            <Line data={forecastData} options={chartOptions} />
+          </div>
+        )}
       </div>
+
+      {anomalies && anomalies.anomalies.length > 0 && (
+        <div className="anomaly-card">
+          <h3>Anomalies Detected</h3>
+          <p>Days with unusual sales activity:</p>
+          <div className="anomaly-list">
+            {anomalies.anomalies.map((a, i) => (
+              <div key={i} className="anomaly-item">
+                <span>{a.date}</span>
+                <span>${parseFloat(a.daily_revenue).toLocaleString()}</span>
+                <span className="z-score">Z-Score: {parseFloat(a.z_score).toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
