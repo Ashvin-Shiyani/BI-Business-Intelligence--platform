@@ -20,6 +20,8 @@ const getKPIs = async (req, res) => {
 }
 
 // Revenue by month
+
+
 const getRevenueByMonth = async (req, res) => {
   try {
     const result = await pool.query(`
@@ -30,13 +32,16 @@ const getRevenueByMonth = async (req, res) => {
       GROUP BY month
       ORDER BY month ASC
     `)
-    res.json(result.rows)
+    const data = result.rows.map(row => ({
+      month: row.month,
+      revenue: parseFloat(row.revenue)
+    }))
+    res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 }
 
-// Top products by revenue
 const getTopProducts = async (req, res) => {
   try {
     const result = await pool.query(`
@@ -49,7 +54,12 @@ const getTopProducts = async (req, res) => {
       GROUP BY p.name
       ORDER BY revenue DESC
     `)
-    res.json(result.rows)
+    const data = result.rows.map(row => ({
+      name: row.name,
+      revenue: parseFloat(row.revenue),
+      units_sold: parseInt(row.units_sold)
+    }))
+    res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

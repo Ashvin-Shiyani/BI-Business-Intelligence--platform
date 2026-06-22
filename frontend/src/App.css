@@ -96,10 +96,10 @@ body {
 
 .uploader-card h3 {
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
-.uploader-card p {
+.uploader-card > p {
   color: #aaa;
   font-size: 0.875rem;
   margin-bottom: 1rem;
@@ -121,14 +121,136 @@ body {
   background: rgba(99,102,241,0.05);
 }
 
-.upload-success {
-  color: #10b981;
-  margin-top: 1rem;
+.drop-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #6366f1;
+  border: 2px solid #6366f1;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.browse-link {
+  color: #6366f1;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.file-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #0f1117;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.file-icon {
+  background: #2a2d3a;
+  color: #6366f1;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.file-info {
+  flex: 1;
+}
+
+.file-name {
+  color: #fff;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.file-size {
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+.file-status {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.file-status.uploading { color: #6366f1; }
+.file-status.success { color: #10b981; }
+.file-status.error { color: #f43f5e; }
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.remove-btn:hover { color: #f43f5e; }
+
+.trend {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+}
+
+.trend.up { background: rgba(16,185,129,0.2); color: #10b981; }
+.trend.down { background: rgba(244,63,94,0.2); color: #f43f5e; }
+
+.anomaly-card {
+  background: #1a1d27;
+  border: 1px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.anomaly-card h3 {
+  color: #f59e0b;
+  margin-bottom: 0.5rem;
+}
+
+.anomaly-card p {
+  color: #aaa;
+  margin-bottom: 1rem;
   font-size: 0.875rem;
 }
 
-.upload-error {
-  color: #f43f5e;
-  margin-top: 1rem;
+.anomaly-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.anomaly-item {
+  display: flex;
+  justify-content: space-between;
+  background: #0f1117;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   font-size: 0.875rem;
 }
+
+.z-score { color: #f59e0b; }
+
+.export-btn {
+  margin-top: 1rem;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.export-btn:hover { background: #4f46e5; }
+.export-btn:disabled { background: #2a2d3a; cursor: not-allowed; }

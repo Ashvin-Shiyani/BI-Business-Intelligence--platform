@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import ExportButton from './components/ExportButton'
 import CSVUploader from './components/CSVuploader'
 import { getKPIs, getRevenueByMonth, getTopProducts, getRevenueByCategory, getForecast, getAnomalies } from './services/api'
 import { Line, Bar, Pie } from 'react-chartjs-2'
@@ -124,8 +125,9 @@ export default function App() {
       <header className="header">
         <h1>BI Platform</h1>
         <p>Business Intelligence Dashboard</p>
+        <ExportButton />
       </header>
-      <CSVUploader onUploadSuccess={() => window.location.reload()} />
+      <CSVUploader onUploadSuccess={() => {}} />
 
       <div className="kpi-grid">
         <div className="kpi-card">
